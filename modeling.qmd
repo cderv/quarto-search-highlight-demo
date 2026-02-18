@@ -1,0 +1,63 @@
+---
+title: "Statistical Modeling"
+---
+
+## From Data to Models
+
+Statistical modeling is the process of building a mathematical representation of the relationships in your data. A model captures the patterns and structure in observed data, allowing you to make predictions, test hypotheses, and understand which variables drive outcomes.
+
+The modeling workflow starts with exploratory data analysis — understanding your data before fitting any model. Visualizing distributions, checking for correlations, and identifying potential confounders are essential steps before writing a single line of modeling code.
+
+## Linear Regression
+
+Linear regression is the starting point for most modeling tasks. It assumes a linear relationship between one or more predictor variables and a continuous outcome. The model finds the line (or hyperplane) that minimizes the sum of squared differences between predicted and observed values.
+
+```python
+import statsmodels.api as sm
+
+X = sm.add_constant(df[["square_feet", "bedrooms", "age"]])
+model = sm.OLS(df["price"], X).fit()
+print(model.summary())
+```
+
+The regression summary provides coefficients, p-values, and confidence intervals for each predictor. A coefficient tells you the expected change in the outcome for a one-unit increase in that predictor, holding all other variables constant.
+
+Interpreting regression output requires care. A statistically significant coefficient does not imply causation. Multicollinearity between predictors can inflate standard errors and make individual coefficients unreliable. Always check residual plots to verify that model assumptions hold.
+
+## Classification Models
+
+When the outcome is categorical rather than continuous, classification models are appropriate. Logistic regression extends linear regression to binary outcomes by modeling the log-odds of the positive class.
+
+For more complex classification tasks, tree-based methods like random forests and gradient boosting machines often outperform logistic regression. These models capture nonlinear relationships and interactions between variables without requiring explicit specification.
+
+```python
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import cross_val_score
+
+clf = RandomForestClassifier(n_estimators=100, random_state=42)
+scores = cross_val_score(clf, X_train, y_train, cv=5, scoring="accuracy")
+print(f"Mean accuracy: {scores.mean():.3f}")
+```
+
+Model evaluation for classification goes beyond accuracy. The confusion matrix, precision, recall, and the ROC curve each tell a different part of the story. In imbalanced data settings, accuracy can be misleading — a model that always predicts the majority class achieves high accuracy but is useless.
+
+## Model Selection and Validation
+
+Choosing between competing models requires a principled approach. Cross-validation estimates how well a model generalizes to unseen data by training and testing on different subsets. The bias-variance tradeoff guides model complexity — simple models may underfit while complex models risk overfitting.
+
+Information criteria like AIC and BIC balance model fit against complexity. A lower value indicates a better model, penalizing unnecessary parameters. These criteria are particularly useful for comparing regression models with different sets of predictors.
+
+## Regularization
+
+When you have many predictors relative to observations, regularization prevents overfitting by adding a penalty term to the loss function. Ridge regression (L2 penalty) shrinks coefficients toward zero, while Lasso regression (L1 penalty) can set coefficients exactly to zero, performing variable selection.
+
+```python
+from sklearn.linear_model import LassoCV
+
+lasso = LassoCV(cv=5, random_state=42)
+lasso.fit(X_train, y_train)
+selected = [f for f, c in zip(feature_names, lasso.coef_) if c != 0]
+print(f"Selected {len(selected)} of {len(feature_names)} features")
+```
+
+Elastic net combines both penalties, offering a middle ground that handles correlated predictors better than Lasso alone. The mixing parameter controls the balance between L1 and L2 regularization, and cross-validation selects the optimal penalty strength.

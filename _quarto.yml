@@ -1,0 +1,20 @@
+project:
+  type: website
+
+website:
+  title: "Search Highlight Demo"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: pandas.qmd
+        text: Pandas
+      - href: visualization.qmd
+        text: Visualization
+      - href: modeling.qmd
+        text: Modeling
+  search: true
+
+format:
+  html:
+    theme: cosmo

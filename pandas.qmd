@@ -1,0 +1,49 @@
+---
+title: "Data Manipulation with Pandas"
+---
+
+## Working with DataFrames
+
+Pandas is the foundational library for data manipulation in Python. A DataFrame is a two-dimensional labeled data structure with columns that can hold different data types. You can think of it as a spreadsheet or SQL table represented in Python.
+
+When you load data into a DataFrame, pandas provides a rich set of methods to inspect, clean, and transform that data. The `head()` and `info()` methods give you a quick overview of your data, while `describe()` produces summary statistics for numeric columns.
+
+## Selecting and Filtering Data
+
+One of the most common operations is selecting subsets of your data. You can select columns by name, filter rows based on conditions, or combine both operations. Boolean indexing lets you write expressive queries directly against your DataFrame.
+
+```python
+import pandas as pd
+
+df = pd.read_csv("sales_data.csv")
+recent = df[df["date"] > "2024-01-01"]
+high_value = recent[recent["amount"] > 1000]
+```
+
+Filtering data based on multiple conditions is straightforward with the `&` and `|` operators. Each condition must be wrapped in parentheses to ensure correct evaluation order.
+
+## Grouping and Aggregation
+
+The `groupby()` method is central to data analysis with pandas. It splits your data into groups based on one or more columns, applies an aggregation function, and combines the results. This pattern — split, apply, combine — is the backbone of most data summarization tasks.
+
+```python
+summary = df.groupby("region").agg(
+    total_sales=("amount", "sum"),
+    avg_order=("amount", "mean"),
+    order_count=("amount", "count")
+)
+```
+
+You can group by multiple columns to create hierarchical summaries. The resulting data can be pivoted, unstacked, or flattened depending on your reporting needs.
+
+## Handling Missing Data
+
+Real-world data almost always contains missing values. Pandas represents missing data as `NaN` (Not a Number) and provides tools to detect, remove, or fill these gaps. The `isna()` method identifies missing values, while `fillna()` and `dropna()` let you handle them.
+
+Choosing how to handle missing data depends on your analysis goals. Dropping rows with missing values is simple but can reduce your dataset significantly. Filling with the mean or median preserves row count but can introduce bias. Domain knowledge should guide the decision.
+
+## Merging and Joining Data
+
+Combining data from multiple sources is a routine task in data analysis. Pandas provides `merge()` for SQL-style joins and `concat()` for stacking DataFrames vertically or horizontally. The merge operation matches rows based on shared key columns, similar to a JOIN in SQL.
+
+Understanding the different join types — inner, left, right, and outer — is essential for combining data correctly. An inner join keeps only rows with matching keys in both DataFrames, while a left join preserves all rows from the left DataFrame regardless of whether a match exists.

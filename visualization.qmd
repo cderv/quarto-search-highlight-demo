@@ -1,0 +1,61 @@
+---
+title: "Data Visualization"
+---
+
+## Why Visualization Matters
+
+A well-designed chart communicates patterns in data faster than any table or summary statistic. Visualization is not just a presentation tool — it is an analytical tool. Plotting your data early and often reveals outliers, trends, and relationships that would otherwise remain hidden in rows of numbers.
+
+The choice of chart type depends on what aspect of the data you want to emphasize. Bar charts compare categories, line charts show trends over time, scatter plots reveal relationships between variables, and histograms display distributions.
+
+## Creating Basic Plots
+
+Most Python visualization starts with matplotlib, the foundational plotting library. While its syntax can be verbose, matplotlib provides fine-grained control over every aspect of a chart. The `pyplot` interface offers a quick way to create common plot types.
+
+```python
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(10, 6))
+plt.plot(dates, values, marker="o")
+plt.title("Monthly Revenue")
+plt.xlabel("Date")
+plt.ylabel("Revenue ($)")
+plt.grid(True)
+plt.show()
+```
+
+For statistical visualization, seaborn builds on matplotlib with a higher-level interface. It produces attractive charts with minimal code and integrates directly with pandas DataFrames.
+
+## Chart Types and When to Use Them
+
+**Bar charts** work best for comparing discrete categories. Use horizontal bar charts when category labels are long. Grouped or stacked bars can show subcategories within each group.
+
+**Line charts** are ideal for time series data where you want to show trends and changes over a continuous axis. Multiple lines on the same plot allow direct comparison between series.
+
+**Scatter plots** reveal the relationship between two numeric variables. Adding color or size as a third dimension can encode additional data. A scatter plot is often the first step before fitting a regression model to your data.
+
+**Box plots** summarize the distribution of a numeric variable by showing the median, quartiles, and outliers. They are especially useful for comparing distributions across groups.
+
+## Interactive Visualization
+
+Static charts work well for reports and publications, but interactive visualization lets users explore data at their own pace. Libraries like Plotly and Altair produce interactive charts that support zooming, panning, tooltips, and filtering.
+
+```python
+import plotly.express as px
+
+fig = px.scatter(
+    df, x="gdp_per_capita", y="life_expectancy",
+    size="population", color="continent",
+    hover_name="country",
+    title="Health vs Wealth by Country"
+)
+fig.show()
+```
+
+Interactive charts are particularly effective in dashboards where users need to drill into specific data points. The ability to hover over a chart element and see its exact values eliminates the need to cross-reference between the chart and the underlying data table.
+
+## Design Principles
+
+Good chart design follows a few core principles. Minimize non-data ink — every element on the chart should serve a purpose. Label axes clearly and include units. Use color intentionally, not decoratively. Avoid 3D effects that distort data perception.
+
+The data-to-ink ratio, a concept from Edward Tufte, suggests removing any visual element that does not directly represent data. Grid lines should be subtle, legends should be positioned close to the data they describe, and chart titles should state the finding, not just the topic.

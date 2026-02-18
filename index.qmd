@@ -1,0 +1,31 @@
+---
+title: "Search Highlight Demo"
+---
+
+## About This Demo
+
+This site demonstrates the search highlight fix from [quarto-dev/quarto-cli#14047](https://github.com/quarto-dev/quarto-cli/issues/14047). When you navigate to a page with a `?q=term` parameter in the URL, matching terms are highlighted with a yellow background. This is the same mechanism used when you click a search result in the Quarto search box.
+
+## How to Test
+
+Try these links to see search highlighting in action:
+
+- [Pandas page with "data" highlighted](pandas.html?q=data)
+- [Visualization page with "chart" highlighted](visualization.html?q=chart)
+- [Modeling page with "regression" highlighted](modeling.html?q=regression)
+
+You can also use the search box in the top navigation bar. Type a term like "data", then click on one of the results. The destination page should scroll to and highlight the matching text.
+
+## The Bug
+
+In previous versions of Quarto, search highlights were cleared almost immediately after page load. Layout-settling events (`quarto-hrChanged` and `quarto-sectionChanged`) fired within the first ~24ms and triggered a `defined(defined())` call chain that wiped the `<mark>` elements before users could see them.
+
+## The Fix
+
+The fix delays the registration of highlight-clearing event listeners by 1000ms, giving the initial layout events time to settle before the listeners become active. This ensures that search highlights remain visible when navigating from search results.
+
+See [PR #14049](https://github.com/quarto-dev/quarto-cli/pull/14049) for the implementation details.
+
+## Content for Searching
+
+This site includes several pages with data science content to provide realistic search targets. Each page covers a different topic — data manipulation with pandas, data visualization, and statistical modeling — with enough prose to exercise the search and highlight functionality across multiple pages.
