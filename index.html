@@ -97,6 +97,10 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="./tabsets.html"> 
+<span class="menu-text">Tabsets</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="./pandas.html"> 
 <span class="menu-text">Pandas</span></a>
   </li>  
@@ -198,6 +202,16 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="the-fix">The Fix</h2>
 <p>The fix delays the registration of highlight-clearing event listeners by 1000ms, giving the initial layout events time to settle before the listeners become active. This ensures that search highlights remain visible when navigating from search results.</p>
 <p>See <a href="https://github.com/quarto-dev/quarto-cli/pull/14049">PR #14049</a> for the implementation details.</p>
+</section>
+<section id="search-tab-activation" class="level2">
+<h2 class="anchored" data-anchor-id="search-tab-activation">Search &amp; Tab Activation</h2>
+<p>Building on the highlight fix, <a href="https://github.com/quarto-dev/quarto-cli/pull/14053">PR #14053</a> automatically activates tabs that contain matching content. When a search result points to content inside an inactive tab, the tab is activated so the highlighted match is visible. This works for ungrouped tabs, grouped tabs (overriding localStorage preferences), and nested tabsets.</p>
+<p>See the <a href="tabsets.html">Tabsets demo page</a> for interactive examples, or try these links directly:</p>
+<ul>
+<li><a href="tabsets.html?q=beta-unique-search-term">Inactive tab activation</a> — activates Tab Beta</li>
+<li><a href="tabsets.html?q=nested-inner-only-term">Nested tab activation</a> — activates both outer and inner tabs</li>
+<li><a href="tabsets.html?q=python-only-content">Grouped tab override</a> — Python activates despite R preference</li>
+</ul>
 </section>
 <section id="content-for-searching" class="level2">
 <h2 class="anchored" data-anchor-id="content-for-searching">Content for Searching</h2>

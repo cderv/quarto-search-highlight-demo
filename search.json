@@ -42,6 +42,97 @@
     "text": "Design Principles\nGood chart design follows a few core principles. Minimize non-data ink — every element on the chart should serve a purpose. Label axes clearly and include units. Use color intentionally, not decoratively. Avoid 3D effects that distort data perception.\nThe data-to-ink ratio, a concept from Edward Tufte, suggests removing any visual element that does not directly represent data. Grid lines should be subtle, legends should be positioned close to the data they describe, and chart titles should state the finding, not just the topic."
   },
   {
+    "objectID": "pandas.html",
+    "href": "pandas.html",
+    "title": "Data Manipulation with Pandas",
+    "section": "",
+    "text": "Pandas is the foundational library for data manipulation in Python. A DataFrame is a two-dimensional labeled data structure with columns that can hold different data types. You can think of it as a spreadsheet or SQL table represented in Python.\nWhen you load data into a DataFrame, pandas provides a rich set of methods to inspect, clean, and transform that data. The head() and info() methods give you a quick overview of your data, while describe() produces summary statistics for numeric columns."
+  },
+  {
+    "objectID": "pandas.html#working-with-dataframes",
+    "href": "pandas.html#working-with-dataframes",
+    "title": "Data Manipulation with Pandas",
+    "section": "",
+    "text": "Pandas is the foundational library for data manipulation in Python. A DataFrame is a two-dimensional labeled data structure with columns that can hold different data types. You can think of it as a spreadsheet or SQL table represented in Python.\nWhen you load data into a DataFrame, pandas provides a rich set of methods to inspect, clean, and transform that data. The head() and info() methods give you a quick overview of your data, while describe() produces summary statistics for numeric columns."
+  },
+  {
+    "objectID": "pandas.html#selecting-and-filtering-data",
+    "href": "pandas.html#selecting-and-filtering-data",
+    "title": "Data Manipulation with Pandas",
+    "section": "Selecting and Filtering Data",
+    "text": "Selecting and Filtering Data\nOne of the most common operations is selecting subsets of your data. You can select columns by name, filter rows based on conditions, or combine both operations. Boolean indexing lets you write expressive queries directly against your DataFrame.\nimport pandas as pd\n\ndf = pd.read_csv(\"sales_data.csv\")\nrecent = df[df[\"date\"] &gt; \"2024-01-01\"]\nhigh_value = recent[recent[\"amount\"] &gt; 1000]\nFiltering data based on multiple conditions is straightforward with the & and | operators. Each condition must be wrapped in parentheses to ensure correct evaluation order."
+  },
+  {
+    "objectID": "pandas.html#grouping-and-aggregation",
+    "href": "pandas.html#grouping-and-aggregation",
+    "title": "Data Manipulation with Pandas",
+    "section": "Grouping and Aggregation",
+    "text": "Grouping and Aggregation\nThe groupby() method is central to data analysis with pandas. It splits your data into groups based on one or more columns, applies an aggregation function, and combines the results. This pattern — split, apply, combine — is the backbone of most data summarization tasks.\nsummary = df.groupby(\"region\").agg(\n    total_sales=(\"amount\", \"sum\"),\n    avg_order=(\"amount\", \"mean\"),\n    order_count=(\"amount\", \"count\")\n)\nYou can group by multiple columns to create hierarchical summaries. The resulting data can be pivoted, unstacked, or flattened depending on your reporting needs."
+  },
+  {
+    "objectID": "pandas.html#handling-missing-data",
+    "href": "pandas.html#handling-missing-data",
+    "title": "Data Manipulation with Pandas",
+    "section": "Handling Missing Data",
+    "text": "Handling Missing Data\nReal-world data almost always contains missing values. Pandas represents missing data as NaN (Not a Number) and provides tools to detect, remove, or fill these gaps. The isna() method identifies missing values, while fillna() and dropna() let you handle them.\nChoosing how to handle missing data depends on your analysis goals. Dropping rows with missing values is simple but can reduce your dataset significantly. Filling with the mean or median preserves row count but can introduce bias. Domain knowledge should guide the decision."
+  },
+  {
+    "objectID": "pandas.html#merging-and-joining-data",
+    "href": "pandas.html#merging-and-joining-data",
+    "title": "Data Manipulation with Pandas",
+    "section": "Merging and Joining Data",
+    "text": "Merging and Joining Data\nCombining data from multiple sources is a routine task in data analysis. Pandas provides merge() for SQL-style joins and concat() for stacking DataFrames vertically or horizontally. The merge operation matches rows based on shared key columns, similar to a JOIN in SQL.\nUnderstanding the different join types — inner, left, right, and outer — is essential for combining data correctly. An inner join keeps only rows with matching keys in both DataFrames, while a left join preserves all rows from the left DataFrame regardless of whether a match exists."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Search Highlight Demo",
+    "section": "",
+    "text": "This site demonstrates the search highlight fix from quarto-dev/quarto-cli#14047. When you navigate to a page with a ?q=term parameter in the URL, matching terms are highlighted with a yellow background. This is the same mechanism used when you click a search result in the Quarto search box."
+  },
+  {
+    "objectID": "index.html#about-this-demo",
+    "href": "index.html#about-this-demo",
+    "title": "Search Highlight Demo",
+    "section": "",
+    "text": "This site demonstrates the search highlight fix from quarto-dev/quarto-cli#14047. When you navigate to a page with a ?q=term parameter in the URL, matching terms are highlighted with a yellow background. This is the same mechanism used when you click a search result in the Quarto search box."
+  },
+  {
+    "objectID": "index.html#how-to-test",
+    "href": "index.html#how-to-test",
+    "title": "Search Highlight Demo",
+    "section": "How to Test",
+    "text": "How to Test\n\nDirect URL highlighting (?q=)\nTry these links to see search highlighting in action:\n\nPandas page with “data” highlighted\nVisualization page with “chart” highlighted\nModeling page with “regression” highlighted\n\nThese use the ?q=term URL parameter, which triggers JavaScript-based &lt;mark&gt; highlighting on the destination page. The highlights clear when you scroll enough to change the active section — this is by design.\n\n\nThrough the search box\n\nClick the search icon in the navbar (or press S)\nType a term like “regression”\nClick on one of the search results\n\nThe destination page should scroll to the matching content with JS &lt;mark&gt; highlights (yellow background on matching terms, cleared on scroll).\n\n\nTwo highlight mechanisms\nQuarto search results include two highlight mechanisms in their URLs, each serving a different purpose:\n\nJS &lt;mark&gt; highlights via ?q= parameter — highlights all matches on the page, useful on long pages (PR #14049)\nBrowser text fragments via #:~:text= in the URL — scrolls to and highlights one specific match, browser-native (PR #14003)\n\n\n\n\n\n\n\nNoteText fragments vs JS marks on fuse.js sites\n\n\n\nOn sites using fuse.js search (like this one), the two mechanisms don’t coexist. The highlight() function mutates the DOM by wrapping matches in &lt;mark&gt; elements, and this DOM mutation destroys the browser’s text fragment highlight state. As a result, only the JS marks are visible.\nOn sites using Algolia search (like quarto.org), ?q= is not added to search result URLs and highlight() never runs, so text fragments from PR #14003 are the primary highlight mechanism and work as expected. Making ?q= work with Algolia search is discussed in #13123."
+  },
+  {
+    "objectID": "index.html#the-bug",
+    "href": "index.html#the-bug",
+    "title": "Search Highlight Demo",
+    "section": "The Bug",
+    "text": "The Bug\nIn previous versions of Quarto, search highlights were cleared almost immediately after page load. Layout-settling events (quarto-hrChanged and quarto-sectionChanged) fired within the first ~24ms and triggered a defined(defined()) call chain that wiped the &lt;mark&gt; elements before users could see them."
+  },
+  {
+    "objectID": "index.html#the-fix",
+    "href": "index.html#the-fix",
+    "title": "Search Highlight Demo",
+    "section": "The Fix",
+    "text": "The Fix\nThe fix delays the registration of highlight-clearing event listeners by 1000ms, giving the initial layout events time to settle before the listeners become active. This ensures that search highlights remain visible when navigating from search results.\nSee PR #14049 for the implementation details."
+  },
+  {
+    "objectID": "index.html#search-tab-activation",
+    "href": "index.html#search-tab-activation",
+    "title": "Search Highlight Demo",
+    "section": "Search & Tab Activation",
+    "text": "Search & Tab Activation\nBuilding on the highlight fix, PR #14053 automatically activates tabs that contain matching content. When a search result points to content inside an inactive tab, the tab is activated so the highlighted match is visible. This works for ungrouped tabs, grouped tabs (overriding localStorage preferences), and nested tabsets.\nSee the Tabsets demo page for interactive examples, or try these links directly:\n\nInactive tab activation — activates Tab Beta\nNested tab activation — activates both outer and inner tabs\nGrouped tab override — Python activates despite R preference"
+  },
+  {
+    "objectID": "index.html#content-for-searching",
+    "href": "index.html#content-for-searching",
+    "title": "Search Highlight Demo",
+    "section": "Content for Searching",
+    "text": "Content for Searching\nThis site includes several pages with data science content to provide realistic search targets. Each page covers a different topic — data manipulation with pandas, data visualization, and statistical modeling — with enough prose to exercise the search and highlight functionality across multiple pages."
+  },
+  {
     "objectID": "modeling.html",
     "href": "modeling.html",
     "title": "Statistical Modeling",
@@ -84,87 +175,59 @@
     "text": "Regularization\nWhen you have many predictors relative to observations, regularization prevents overfitting by adding a penalty term to the loss function. Ridge regression (L2 penalty) shrinks coefficients toward zero, while Lasso regression (L1 penalty) can set coefficients exactly to zero, performing variable selection.\nfrom sklearn.linear_model import LassoCV\n\nlasso = LassoCV(cv=5, random_state=42)\nlasso.fit(X_train, y_train)\nselected = [f for f, c in zip(feature_names, lasso.coef_) if c != 0]\nprint(f\"Selected {len(selected)} of {len(feature_names)} features\")\nElastic net combines both penalties, offering a middle ground that handles correlated predictors better than Lasso alone. The mixing parameter controls the balance between L1 and L2 regularization, and cross-validation selects the optimal penalty strength."
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Search Highlight Demo",
+    "objectID": "tabsets.html",
+    "href": "tabsets.html",
+    "title": "Search & Tabsets",
     "section": "",
-    "text": "This site demonstrates the search highlight fix from quarto-dev/quarto-cli#14047. When you navigate to a page with a ?q=term parameter in the URL, matching terms are highlighted with a yellow background. This is the same mechanism used when you click a search result in the Quarto search box."
+    "text": "Quarto websites use Bootstrap tabs for tabset panels. When a user navigates from a search result to content inside an inactive tab, the tab was not activated — the highlighted match was hidden behind the default tab, invisible to the user.\nPR #14053 automatically activates tabs that contain search matches, so highlighted results are always visible. It handles ungrouped tabs, grouped tabs (with localStorage persistence), and nested tabsets."
   },
   {
-    "objectID": "index.html#about-this-demo",
-    "href": "index.html#about-this-demo",
-    "title": "Search Highlight Demo",
+    "objectID": "tabsets.html#about-this-feature",
+    "href": "tabsets.html#about-this-feature",
+    "title": "Search & Tabsets",
     "section": "",
-    "text": "This site demonstrates the search highlight fix from quarto-dev/quarto-cli#14047. When you navigate to a page with a ?q=term parameter in the URL, matching terms are highlighted with a yellow background. This is the same mechanism used when you click a search result in the Quarto search box."
+    "text": "Quarto websites use Bootstrap tabs for tabset panels. When a user navigates from a search result to content inside an inactive tab, the tab was not activated — the highlighted match was hidden behind the default tab, invisible to the user.\nPR #14053 automatically activates tabs that contain search matches, so highlighted results are always visible. It handles ungrouped tabs, grouped tabs (with localStorage persistence), and nested tabsets."
   },
   {
-    "objectID": "index.html#how-to-test",
-    "href": "index.html#how-to-test",
-    "title": "Search Highlight Demo",
+    "objectID": "tabsets.html#content-outside-tabs",
+    "href": "tabsets.html#content-outside-tabs",
+    "title": "Search & Tabsets",
+    "section": "Content Outside Tabs",
+    "text": "Content Outside Tabs\nThis paragraph contains epsilon-no-tabs as a searchable term that lives outside any tabset. Searching for it should highlight the match here without changing any tab state below."
+  },
+  {
+    "objectID": "tabsets.html#basic-tab-activation",
+    "href": "tabsets.html#basic-tab-activation",
+    "title": "Search & Tabsets",
+    "section": "Basic Tab Activation",
+    "text": "Basic Tab Activation\nThis tabset has two ungrouped tabs. The unique term beta-unique-search-term appears only in Tab Beta (the inactive tab by default). Searching for it should activate Tab Beta automatically.\n\nTab AlphaTab Beta\n\n\nThis is the default active tab. It contains general content about the Alpha configuration, but nothing that matches the Beta-specific search term.\n\n\nThis tab contains beta-unique-search-term — a term that only appears here. When you search for it, this inactive tab should automatically become active so the highlighted match is visible."
+  },
+  {
+    "objectID": "tabsets.html#both-tabs-match",
+    "href": "tabsets.html#both-tabs-match",
+    "title": "Search & Tabsets",
+    "section": "Both Tabs Match",
+    "text": "Both Tabs Match\nWhen the active tab already contains a match, no tab switch is needed. Both tabs below contain the term gamma-both-tabs, but since the R tab (active by default) already has a match, it stays active.\n\nRPython\n\n\nThe R tab contains gamma-both-tabs content. Since this tab is active by default and has a match, no tab switch occurs.\n\n\nThe Python tab also contains gamma-both-tabs content. Even though this tab has a match too, the active tab (R) keeps priority."
+  },
+  {
+    "objectID": "tabsets.html#grouped-tabsets",
+    "href": "tabsets.html#grouped-tabsets",
+    "title": "Search & Tabsets",
+    "section": "Grouped Tabsets",
+    "text": "Grouped Tabsets\nGrouped tabsets share state — clicking “Python” in one switches all tabsets in the same group. Tab preferences are stored in localStorage and restored on page load.\nSearch activation intentionally does not trigger group sync. When a search match is in the Python tab of one grouped tabset, only that specific tabset switches to Python. Other tabsets in the same group keep their current state.\nThe first tabset below contains python-only-content only in its Python tab. The second tabset has no matching content.\n\nRPython\n\n\nThe R tab in the first grouped tabset. This tab has general R content but no unique search term.\n\n\nThis tab contains python-only-content — a term exclusive to this tab. Even if localStorage says your preferred language is R, searching for this term activates the Python tab here. The second grouped tabset below is unaffected and stays on its default.\n\n\n\n\nRPython\n\n\nThe R tab in the second grouped tabset. When searching for python-only-content, this tab remains active because the match is only in the first tabset’s Python tab.\n\n\nThe Python tab in the second grouped tabset. No search-specific content here."
+  },
+  {
+    "objectID": "tabsets.html#nested-tabsets",
+    "href": "tabsets.html#nested-tabsets",
+    "title": "Search & Tabsets",
+    "section": "Nested Tabsets",
+    "text": "Nested Tabsets\nTabsets can be nested — an inner tabset inside an outer tab. When a match is inside a deeply nested inactive tab, the fix activates all ancestor tabs from outermost to innermost.\nThe term nested-inner-only-term appears only in Inner Tab Y, which is inside Outer Tab B. Searching for it activates both outer and inner tabs.\n\nOuter Tab AOuter Tab B\n\n\nThis is the default active outer tab with general content.\n\n\nContent in Outer Tab B, which contains a nested tabset:\n\nInner Tab XInner Tab Y\n\n\nThis is the default active inner tab inside Outer Tab B.\n\n\nThis tab contains nested-inner-only-term — a term buried two levels deep. Searching for it activates Outer Tab B first, then Inner Tab Y, making the highlighted match visible."
+  },
+  {
+    "objectID": "tabsets.html#how-to-test",
+    "href": "tabsets.html#how-to-test",
+    "title": "Search & Tabsets",
     "section": "How to Test",
-    "text": "How to Test\n\nDirect URL highlighting (?q=)\nTry these links to see search highlighting in action:\n\nPandas page with “data” highlighted\nVisualization page with “chart” highlighted\nModeling page with “regression” highlighted\n\nThese use the ?q=term URL parameter, which triggers JavaScript-based &lt;mark&gt; highlighting on the destination page. The highlights clear when you scroll enough to change the active section — this is by design.\n\n\nThrough the search box\n\nClick the search icon in the navbar (or press S)\nType a term like “regression”\nClick on one of the search results\n\nThe destination page should scroll to the matching content with JS &lt;mark&gt; highlights (yellow background on matching terms, cleared on scroll).\n\n\nTwo highlight mechanisms\nQuarto search results include two highlight mechanisms in their URLs, each serving a different purpose:\n\nJS &lt;mark&gt; highlights via ?q= parameter — highlights all matches on the page, useful on long pages (PR #14049)\nBrowser text fragments via #:~:text= in the URL — scrolls to and highlights one specific match, browser-native (PR #14003)\n\n\n\n\n\n\n\nNoteText fragments vs JS marks on fuse.js sites\n\n\n\nOn sites using fuse.js search (like this one), the two mechanisms don’t coexist. The highlight() function mutates the DOM by wrapping matches in &lt;mark&gt; elements, and this DOM mutation destroys the browser’s text fragment highlight state. As a result, only the JS marks are visible.\nOn sites using Algolia search (like quarto.org), ?q= is not added to search result URLs and highlight() never runs, so text fragments from PR #14003 are the primary highlight mechanism and work as expected. Making ?q= work with Algolia search is discussed in #13123."
-  },
-  {
-    "objectID": "index.html#the-bug",
-    "href": "index.html#the-bug",
-    "title": "Search Highlight Demo",
-    "section": "The Bug",
-    "text": "The Bug\nIn previous versions of Quarto, search highlights were cleared almost immediately after page load. Layout-settling events (quarto-hrChanged and quarto-sectionChanged) fired within the first ~24ms and triggered a defined(defined()) call chain that wiped the &lt;mark&gt; elements before users could see them."
-  },
-  {
-    "objectID": "index.html#the-fix",
-    "href": "index.html#the-fix",
-    "title": "Search Highlight Demo",
-    "section": "The Fix",
-    "text": "The Fix\nThe fix delays the registration of highlight-clearing event listeners by 1000ms, giving the initial layout events time to settle before the listeners become active. This ensures that search highlights remain visible when navigating from search results.\nSee PR #14049 for the implementation details."
-  },
-  {
-    "objectID": "index.html#content-for-searching",
-    "href": "index.html#content-for-searching",
-    "title": "Search Highlight Demo",
-    "section": "Content for Searching",
-    "text": "Content for Searching\nThis site includes several pages with data science content to provide realistic search targets. Each page covers a different topic — data manipulation with pandas, data visualization, and statistical modeling — with enough prose to exercise the search and highlight functionality across multiple pages."
-  },
-  {
-    "objectID": "pandas.html",
-    "href": "pandas.html",
-    "title": "Data Manipulation with Pandas",
-    "section": "",
-    "text": "Pandas is the foundational library for data manipulation in Python. A DataFrame is a two-dimensional labeled data structure with columns that can hold different data types. You can think of it as a spreadsheet or SQL table represented in Python.\nWhen you load data into a DataFrame, pandas provides a rich set of methods to inspect, clean, and transform that data. The head() and info() methods give you a quick overview of your data, while describe() produces summary statistics for numeric columns."
-  },
-  {
-    "objectID": "pandas.html#working-with-dataframes",
-    "href": "pandas.html#working-with-dataframes",
-    "title": "Data Manipulation with Pandas",
-    "section": "",
-    "text": "Pandas is the foundational library for data manipulation in Python. A DataFrame is a two-dimensional labeled data structure with columns that can hold different data types. You can think of it as a spreadsheet or SQL table represented in Python.\nWhen you load data into a DataFrame, pandas provides a rich set of methods to inspect, clean, and transform that data. The head() and info() methods give you a quick overview of your data, while describe() produces summary statistics for numeric columns."
-  },
-  {
-    "objectID": "pandas.html#selecting-and-filtering-data",
-    "href": "pandas.html#selecting-and-filtering-data",
-    "title": "Data Manipulation with Pandas",
-    "section": "Selecting and Filtering Data",
-    "text": "Selecting and Filtering Data\nOne of the most common operations is selecting subsets of your data. You can select columns by name, filter rows based on conditions, or combine both operations. Boolean indexing lets you write expressive queries directly against your DataFrame.\nimport pandas as pd\n\ndf = pd.read_csv(\"sales_data.csv\")\nrecent = df[df[\"date\"] &gt; \"2024-01-01\"]\nhigh_value = recent[recent[\"amount\"] &gt; 1000]\nFiltering data based on multiple conditions is straightforward with the & and | operators. Each condition must be wrapped in parentheses to ensure correct evaluation order."
-  },
-  {
-    "objectID": "pandas.html#grouping-and-aggregation",
-    "href": "pandas.html#grouping-and-aggregation",
-    "title": "Data Manipulation with Pandas",
-    "section": "Grouping and Aggregation",
-    "text": "Grouping and Aggregation\nThe groupby() method is central to data analysis with pandas. It splits your data into groups based on one or more columns, applies an aggregation function, and combines the results. This pattern — split, apply, combine — is the backbone of most data summarization tasks.\nsummary = df.groupby(\"region\").agg(\n    total_sales=(\"amount\", \"sum\"),\n    avg_order=(\"amount\", \"mean\"),\n    order_count=(\"amount\", \"count\")\n)\nYou can group by multiple columns to create hierarchical summaries. The resulting data can be pivoted, unstacked, or flattened depending on your reporting needs."
-  },
-  {
-    "objectID": "pandas.html#handling-missing-data",
-    "href": "pandas.html#handling-missing-data",
-    "title": "Data Manipulation with Pandas",
-    "section": "Handling Missing Data",
-    "text": "Handling Missing Data\nReal-world data almost always contains missing values. Pandas represents missing data as NaN (Not a Number) and provides tools to detect, remove, or fill these gaps. The isna() method identifies missing values, while fillna() and dropna() let you handle them.\nChoosing how to handle missing data depends on your analysis goals. Dropping rows with missing values is simple but can reduce your dataset significantly. Filling with the mean or median preserves row count but can introduce bias. Domain knowledge should guide the decision."
-  },
-  {
-    "objectID": "pandas.html#merging-and-joining-data",
-    "href": "pandas.html#merging-and-joining-data",
-    "title": "Data Manipulation with Pandas",
-    "section": "Merging and Joining Data",
-    "text": "Merging and Joining Data\nCombining data from multiple sources is a routine task in data analysis. Pandas provides merge() for SQL-style joins and concat() for stacking DataFrames vertically or horizontally. The merge operation matches rows based on shared key columns, similar to a JOIN in SQL.\nUnderstanding the different join types — inner, left, right, and outer — is essential for combining data correctly. An inner join keeps only rows with matching keys in both DataFrames, while a left join preserves all rows from the left DataFrame regardless of whether a match exists."
+    "text": "How to Test\n\nDirect URL links\nClick these links to test each scenario. Each opens this page with a ?q= parameter that triggers search highlighting:\n\nInactive tab activation: tabsets.html?q=beta-unique-search-term — Tab Beta should activate, match highlighted\nActive tab stays: tabsets.html?q=gamma-both-tabs — R tab stays active (both tabs match, active wins)\nOutside tabs: tabsets.html?q=epsilon-no-tabs — highlight appears in prose above, no tab changes\nNested tabs: tabsets.html?q=nested-inner-only-term — Outer Tab B and Inner Tab Y both activate\nGrouped tab override: tabsets.html?q=python-only-content — Python tab activates in first grouped tabset, second stays unchanged\n\n\n\nTesting the localStorage override\nTo verify that search activation overrides stored tab preferences:\n\nVisit any page on this site and use the search box to search for something\nOn a page with grouped tabsets, click the “R” tab to set your language preference\nNavigate to tabsets.html?q=python-only-content\nThe first grouped tabset should show Python (search intent wins), while the second shows R (your stored preference)"
   }
 ]
