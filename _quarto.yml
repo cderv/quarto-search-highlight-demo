@@ -13,6 +13,8 @@ website:
         text: Visualization
       - href: modeling.qmd
         text: Modeling
+  repo-url: https://github.com/cderv/quarto-search-highlight-demo
+  repo-actions: [issue]
   search: true
 
 format:
