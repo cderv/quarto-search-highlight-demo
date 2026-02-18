@@ -148,13 +148,30 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="how-to-test" class="level2">
 <h2 class="anchored" data-anchor-id="how-to-test">How to Test</h2>
+<section id="direct-url-highlighting-q" class="level3">
+<h3 class="anchored" data-anchor-id="direct-url-highlighting-q">Direct URL highlighting (<code>?q=</code>)</h3>
 <p>Try these links to see search highlighting in action:</p>
 <ul>
 <li><a href="pandas.html?q=data">Pandas page with “data” highlighted</a></li>
 <li><a href="visualization.html?q=chart">Visualization page with “chart” highlighted</a></li>
 <li><a href="modeling.html?q=regression">Modeling page with “regression” highlighted</a></li>
 </ul>
-<p>You can also use the search box in the top navigation bar. Type a term like “data”, then click on one of the results. The destination page should scroll to and highlight the matching text.</p>
+<p>These use the <code>?q=term</code> URL parameter, which triggers JavaScript-based <code>&lt;mark&gt;</code> highlighting on the destination page. The highlights clear when you scroll enough to change the active section — this is by design.</p>
+</section>
+<section id="through-the-search-box" class="level3">
+<h3 class="anchored" data-anchor-id="through-the-search-box">Through the search box</h3>
+<ol type="1">
+<li>Click the search icon in the navbar (or press <code>S</code>)</li>
+<li>Type a term like “regression”</li>
+<li>Click on one of the search results</li>
+</ol>
+<p>The destination page should scroll to the matching content with two complementary highlight mechanisms:</p>
+<ul>
+<li><strong>JS <code>&lt;mark&gt;</code> highlights</strong> (from <code>?q=</code> parameter) — yellow background on matching terms, cleared on scroll (<a href="https://github.com/quarto-dev/quarto-cli/pull/14049">PR #14049</a>)</li>
+<li><strong>Browser text fragments</strong> (from <code>#:~:text=</code> in the URL) — browser-native highlighting that scrolls to and highlights the matched text (<a href="https://github.com/quarto-dev/quarto-cli/pull/14003">PR #14003</a>)</li>
+</ul>
+<p>The two mechanisms work together. Text fragments provide a browser-native fallback that persists independently of the JavaScript highlights.</p>
+</section>
 </section>
 <section id="the-bug" class="level2">
 <h2 class="anchored" data-anchor-id="the-bug">The Bug</h2>

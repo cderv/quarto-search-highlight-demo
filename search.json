@@ -102,7 +102,7 @@
     "href": "index.html#how-to-test",
     "title": "Search Highlight Demo",
     "section": "How to Test",
-    "text": "How to Test\nTry these links to see search highlighting in action:\n\nPandas page with “data” highlighted\nVisualization page with “chart” highlighted\nModeling page with “regression” highlighted\n\nYou can also use the search box in the top navigation bar. Type a term like “data”, then click on one of the results. The destination page should scroll to and highlight the matching text."
+    "text": "How to Test\n\nDirect URL highlighting (?q=)\nTry these links to see search highlighting in action:\n\nPandas page with “data” highlighted\nVisualization page with “chart” highlighted\nModeling page with “regression” highlighted\n\nThese use the ?q=term URL parameter, which triggers JavaScript-based &lt;mark&gt; highlighting on the destination page. The highlights clear when you scroll enough to change the active section — this is by design.\n\n\nThrough the search box\n\nClick the search icon in the navbar (or press S)\nType a term like “regression”\nClick on one of the search results\n\nThe destination page should scroll to the matching content with two complementary highlight mechanisms:\n\nJS &lt;mark&gt; highlights (from ?q= parameter) — yellow background on matching terms, cleared on scroll (PR #14049)\nBrowser text fragments (from #:~:text= in the URL) — browser-native highlighting that scrolls to and highlights the matched text (PR #14003)\n\nThe two mechanisms work together. Text fragments provide a browser-native fallback that persists independently of the JavaScript highlights."
   },
   {
     "objectID": "index.html#the-bug",
