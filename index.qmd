@@ -28,17 +28,17 @@ The destination page should scroll to the matching content with JS `<mark>` high
 
 ### Two highlight mechanisms
 
-Quarto search results include two highlight mechanisms in their URLs:
+Quarto search results include two highlight mechanisms in their URLs, each serving a different purpose:
 
-- **JS `<mark>` highlights** via `?q=` parameter — yellow background on matching terms, cleared on scroll ([PR #14049](https://github.com/quarto-dev/quarto-cli/pull/14049))
-- **Browser text fragments** via `#:~:text=` in the URL — browser-native highlighting ([PR #14003](https://github.com/quarto-dev/quarto-cli/pull/14003))
+- **JS `<mark>` highlights** via `?q=` parameter — highlights *all* matches on the page, useful on long pages ([PR #14049](https://github.com/quarto-dev/quarto-cli/pull/14049))
+- **Browser text fragments** via `#:~:text=` in the URL — scrolls to and highlights *one* specific match, browser-native ([PR #14003](https://github.com/quarto-dev/quarto-cli/pull/14003))
 
 ::: {.callout-note}
 ## Text fragments vs JS marks on fuse.js sites
 
 On sites using fuse.js search (like this one), the two mechanisms don't coexist. The `highlight()` function mutates the DOM by wrapping matches in `<mark>` elements, and this DOM mutation destroys the browser's text fragment highlight state. As a result, only the JS marks are visible.
 
-On sites using Algolia search (like [quarto.org](https://quarto.org)), there is no `?q=` parameter and `highlight()` never runs, so text fragments from PR #14003 are the primary highlight mechanism and work as expected.
+On sites using Algolia search (like [quarto.org](https://quarto.org)), `?q=` is not added to search result URLs and `highlight()` never runs, so text fragments from PR #14003 are the primary highlight mechanism and work as expected. Making `?q=` work with Algolia search is discussed in [#13123](https://github.com/quarto-dev/quarto-cli/discussions/13123).
 :::
 
 ## The Bug
