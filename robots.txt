@@ -1,0 +1,1 @@
+Sitemap: https://cderv.github.io/quarto-search-highlight-demo/sitemap.xml
