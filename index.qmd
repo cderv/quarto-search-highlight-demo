@@ -51,6 +51,16 @@ The fix delays the registration of highlight-clearing event listeners by 1000ms,
 
 See [PR #14049](https://github.com/quarto-dev/quarto-cli/pull/14049) for the implementation details.
 
+## Search & Tab Activation
+
+Building on the highlight fix, [PR #14053](https://github.com/quarto-dev/quarto-cli/pull/14053) automatically activates tabs that contain matching content. When a search result points to content inside an inactive tab, the tab is activated so the highlighted match is visible. This works for ungrouped tabs, grouped tabs (overriding localStorage preferences), and nested tabsets.
+
+See the [Tabsets demo page](tabsets.html) for interactive examples, or try these links directly:
+
+- [Inactive tab activation](tabsets.html?q=beta-unique-search-term) — activates Tab Beta
+- [Nested tab activation](tabsets.html?q=nested-inner-only-term) — activates both outer and inner tabs
+- [Grouped tab override](tabsets.html?q=python-only-content) — Python activates despite R preference
+
 ## Content for Searching
 
 This site includes several pages with data science content to provide realistic search targets. Each page covers a different topic — data manipulation with pandas, data visualization, and statistical modeling — with enough prose to exercise the search and highlight functionality across multiple pages.

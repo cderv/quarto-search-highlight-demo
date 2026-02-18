@@ -1,0 +1,128 @@
+---
+title: "Search & Tabsets"
+---
+
+## About This Feature
+
+Quarto websites use [Bootstrap tabs](https://getbootstrap.com/docs/5.3/components/navs-tabs/) for tabset panels. When a user navigates from a search result to content inside an inactive tab, the tab was not activated — the highlighted match was hidden behind the default tab, invisible to the user.
+
+[PR #14053](https://github.com/quarto-dev/quarto-cli/pull/14053) automatically activates tabs that contain search matches, so highlighted results are always visible. It handles ungrouped tabs, grouped tabs (with localStorage persistence), and nested tabsets.
+
+## Content Outside Tabs
+
+This paragraph contains epsilon-no-tabs as a searchable term that lives outside any tabset. Searching for it should highlight the match here without changing any tab state below.
+
+## Basic Tab Activation
+
+This tabset has two ungrouped tabs. The unique term `beta-unique-search-term` appears only in Tab Beta (the inactive tab by default). Searching for it should activate Tab Beta automatically.
+
+::: {.panel-tabset}
+
+### Tab Alpha
+
+This is the default active tab. It contains general content about the Alpha configuration, but nothing that matches the Beta-specific search term.
+
+### Tab Beta
+
+This tab contains beta-unique-search-term — a term that only appears here. When you search for it, this inactive tab should automatically become active so the highlighted match is visible.
+
+:::
+
+## Both Tabs Match
+
+When the active tab already contains a match, no tab switch is needed. Both tabs below contain the term `gamma-both-tabs`, but since the R tab (active by default) already has a match, it stays active.
+
+::: {.panel-tabset}
+
+### R
+
+The R tab contains gamma-both-tabs content. Since this tab is active by default and has a match, no tab switch occurs.
+
+### Python
+
+The Python tab also contains gamma-both-tabs content. Even though this tab has a match too, the active tab (R) keeps priority.
+
+:::
+
+## Grouped Tabsets
+
+Grouped tabsets share state — clicking "Python" in one switches all tabsets in the same group. Tab preferences are stored in localStorage and restored on page load.
+
+Search activation intentionally does **not** trigger group sync. When a search match is in the Python tab of one grouped tabset, only that specific tabset switches to Python. Other tabsets in the same group keep their current state.
+
+The first tabset below contains `python-only-content` only in its Python tab. The second tabset has no matching content.
+
+::: {.panel-tabset group="language"}
+
+### R
+
+The R tab in the first grouped tabset. This tab has general R content but no unique search term.
+
+### Python
+
+This tab contains python-only-content — a term exclusive to this tab. Even if localStorage says your preferred language is R, searching for this term activates the Python tab here. The second grouped tabset below is unaffected and stays on its default.
+
+:::
+
+::: {.panel-tabset group="language"}
+
+### R
+
+The R tab in the second grouped tabset. When searching for `python-only-content`, this tab remains active because the match is only in the first tabset's Python tab.
+
+### Python
+
+The Python tab in the second grouped tabset. No search-specific content here.
+
+:::
+
+## Nested Tabsets
+
+Tabsets can be nested — an inner tabset inside an outer tab. When a match is inside a deeply nested inactive tab, the fix activates all ancestor tabs from outermost to innermost.
+
+The term `nested-inner-only-term` appears only in Inner Tab Y, which is inside Outer Tab B. Searching for it activates both outer and inner tabs.
+
+::: {.panel-tabset}
+
+### Outer Tab A
+
+This is the default active outer tab with general content.
+
+### Outer Tab B
+
+Content in Outer Tab B, which contains a nested tabset:
+
+::: {.panel-tabset}
+
+#### Inner Tab X
+
+This is the default active inner tab inside Outer Tab B.
+
+#### Inner Tab Y
+
+This tab contains nested-inner-only-term — a term buried two levels deep. Searching for it activates Outer Tab B first, then Inner Tab Y, making the highlighted match visible.
+
+:::
+
+:::
+
+## How to Test
+
+### Direct URL links
+
+Click these links to test each scenario. Each opens this page with a `?q=` parameter that triggers search highlighting:
+
+1. **Inactive tab activation**: [tabsets.html?q=beta-unique-search-term](tabsets.html?q=beta-unique-search-term) — Tab Beta should activate, match highlighted
+2. **Active tab stays**: [tabsets.html?q=gamma-both-tabs](tabsets.html?q=gamma-both-tabs) — R tab stays active (both tabs match, active wins)
+3. **Outside tabs**: [tabsets.html?q=epsilon-no-tabs](tabsets.html?q=epsilon-no-tabs) — highlight appears in prose above, no tab changes
+4. **Nested tabs**: [tabsets.html?q=nested-inner-only-term](tabsets.html?q=nested-inner-only-term) — Outer Tab B and Inner Tab Y both activate
+5. **Grouped tab override**: [tabsets.html?q=python-only-content](tabsets.html?q=python-only-content) — Python tab activates in first grouped tabset, second stays unchanged
+
+### Testing the localStorage override
+
+To verify that search activation overrides stored tab preferences:
+
+1. Visit any page on this site and use the search box to search for something
+2. On a page with grouped tabsets, click the "R" tab to set your language preference
+3. Navigate to [tabsets.html?q=python-only-content](tabsets.html?q=python-only-content)
+4. The first grouped tabset should show Python (search intent wins), while the second shows R (your stored preference)

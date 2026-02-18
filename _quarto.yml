@@ -7,6 +7,8 @@ website:
     left:
       - href: index.qmd
         text: Home
+      - href: tabsets.qmd
+        text: Tabsets
       - href: pandas.qmd
         text: Pandas
       - href: visualization.qmd
