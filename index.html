@@ -169,10 +169,10 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="two-highlight-mechanisms" class="level3">
 <h3 class="anchored" data-anchor-id="two-highlight-mechanisms">Two highlight mechanisms</h3>
-<p>Quarto search results include two highlight mechanisms in their URLs:</p>
+<p>Quarto search results include two highlight mechanisms in their URLs, each serving a different purpose:</p>
 <ul>
-<li><strong>JS <code>&lt;mark&gt;</code> highlights</strong> via <code>?q=</code> parameter — yellow background on matching terms, cleared on scroll (<a href="https://github.com/quarto-dev/quarto-cli/pull/14049">PR #14049</a>)</li>
-<li><strong>Browser text fragments</strong> via <code>#:~:text=</code> in the URL — browser-native highlighting (<a href="https://github.com/quarto-dev/quarto-cli/pull/14003">PR #14003</a>)</li>
+<li><strong>JS <code>&lt;mark&gt;</code> highlights</strong> via <code>?q=</code> parameter — highlights <em>all</em> matches on the page, useful on long pages (<a href="https://github.com/quarto-dev/quarto-cli/pull/14049">PR #14049</a>)</li>
+<li><strong>Browser text fragments</strong> via <code>#:~:text=</code> in the URL — scrolls to and highlights <em>one</em> specific match, browser-native (<a href="https://github.com/quarto-dev/quarto-cli/pull/14003">PR #14003</a>)</li>
 </ul>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -185,7 +185,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <div class="callout-body-container callout-body">
 <p>On sites using fuse.js search (like this one), the two mechanisms don’t coexist. The <code>highlight()</code> function mutates the DOM by wrapping matches in <code>&lt;mark&gt;</code> elements, and this DOM mutation destroys the browser’s text fragment highlight state. As a result, only the JS marks are visible.</p>
-<p>On sites using Algolia search (like <a href="https://quarto.org">quarto.org</a>), there is no <code>?q=</code> parameter and <code>highlight()</code> never runs, so text fragments from PR #14003 are the primary highlight mechanism and work as expected.</p>
+<p>On sites using Algolia search (like <a href="https://quarto.org">quarto.org</a>), <code>?q=</code> is not added to search result URLs and <code>highlight()</code> never runs, so text fragments from PR #14003 are the primary highlight mechanism and work as expected. Making <code>?q=</code> work with Algolia search is discussed in <a href="https://github.com/quarto-dev/quarto-cli/discussions/13123">#13123</a>.</p>
 </div>
 </div>
 </section>
