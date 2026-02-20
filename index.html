@@ -160,7 +160,7 @@ ul.task-list li input[type="checkbox"] {
 <li><a href="visualization.html?q=chart">Visualization page with “chart” highlighted</a></li>
 <li><a href="modeling.html?q=regression">Modeling page with “regression” highlighted</a></li>
 </ul>
-<p>These use the <code>?q=term</code> URL parameter, which triggers JavaScript-based <code>&lt;mark&gt;</code> highlighting on the destination page. The highlights clear when you scroll enough to change the active section — this is by design.</p>
+<p>These use the <code>?q=term</code> URL parameter, which triggers JavaScript-based <code>&lt;mark&gt;</code> highlighting on the destination page. The highlights persist until you navigate away or change the search query.</p>
 </section>
 <section id="through-the-search-box" class="level3">
 <h3 class="anchored" data-anchor-id="through-the-search-box">Through the search box</h3>
@@ -169,13 +169,13 @@ ul.task-list li input[type="checkbox"] {
 <li>Type a term like “regression”</li>
 <li>Click on one of the search results</li>
 </ol>
-<p>The destination page should scroll to the matching content with JS <code>&lt;mark&gt;</code> highlights (yellow background on matching terms, cleared on scroll).</p>
+<p>The destination page should scroll to the matching content with JS <code>&lt;mark&gt;</code> highlights (yellow background on matching terms).</p>
 </section>
 <section id="two-highlight-mechanisms" class="level3">
 <h3 class="anchored" data-anchor-id="two-highlight-mechanisms">Two highlight mechanisms</h3>
 <p>Quarto search results include two highlight mechanisms in their URLs, each serving a different purpose:</p>
 <ul>
-<li><strong>JS <code>&lt;mark&gt;</code> highlights</strong> via <code>?q=</code> parameter — highlights <em>all</em> matches on the page, useful on long pages (<a href="https://github.com/quarto-dev/quarto-cli/pull/14049">PR #14049</a>)</li>
+<li><strong>JS <code>&lt;mark&gt;</code> highlights</strong> via <code>?q=</code> parameter — highlights <em>all</em> matches on the page, persisting until navigation or query change (<a href="https://github.com/quarto-dev/quarto-cli/pull/13442">PR #13442</a>, <a href="https://github.com/quarto-dev/quarto-cli/pull/14049">PR #14049</a>)</li>
 <li><strong>Browser text fragments</strong> via <code>#:~:text=</code> in the URL — scrolls to and highlights <em>one</em> specific match, browser-native (<a href="https://github.com/quarto-dev/quarto-cli/pull/14003">PR #14003</a>)</li>
 </ul>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -196,12 +196,15 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="the-bug" class="level2">
 <h2 class="anchored" data-anchor-id="the-bug">The Bug</h2>
-<p>In previous versions of Quarto, search highlights were cleared almost immediately after page load. Layout-settling events (<code>quarto-hrChanged</code> and <code>quarto-sectionChanged</code>) fired within the first ~24ms and triggered a <code>defined(defined())</code> call chain that wiped the <code>&lt;mark&gt;</code> elements before users could see them.</p>
+<p>In previous versions of Quarto, search highlights were cleared almost immediately. Two issues contributed:</p>
+<ul>
+<li><strong><a href="https://github.com/quarto-dev/quarto-cli/issues/9802">#9802</a></strong>: Scroll events (<code>quarto-hrChanged</code>, <code>quarto-sectionChanged</code>) cleared highlights whenever the user scrolled the page.</li>
+<li><strong><a href="https://github.com/quarto-dev/quarto-cli/issues/14047">#14047</a></strong>: Even without scrolling, layout-settling events fired within the first ~24ms and cleared highlights before users could see them.</li>
+</ul>
 </section>
 <section id="the-fix" class="level2">
 <h2 class="anchored" data-anchor-id="the-fix">The Fix</h2>
-<p>The fix delays the registration of highlight-clearing event listeners by 1000ms, giving the initial layout events time to settle before the listeners become active. This ensures that search highlights remain visible when navigating from search results.</p>
-<p>See <a href="https://github.com/quarto-dev/quarto-cli/pull/14049">PR #14049</a> for the implementation details.</p>
+<p><a href="https://github.com/quarto-dev/quarto-cli/pull/13442">PR #13442</a> by <a href="https://github.com/jtbayly"><span class="citation" data-cites="jtbayly">@jtbayly</span></a> removed the scroll-based highlight clearing entirely. Highlights now persist until the user navigates away or changes the search query. <a href="https://github.com/quarto-dev/quarto-cli/pull/14049">PR #14049</a> adds Playwright test coverage for the expected behavior.</p>
 </section>
 <section id="search-tab-activation" class="level2">
 <h2 class="anchored" data-anchor-id="search-tab-activation">Search &amp; Tab Activation</h2>
